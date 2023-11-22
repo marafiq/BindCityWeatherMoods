@@ -1,6 +1,11 @@
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddOptions<Config>()
-    .Bind(builder.Configuration)
+    .Bind(builder.Configuration, options =>
+    {
+        //try not to use binding non public properties
+        //options.BindNonPublicProperties= true;
+        options.ErrorOnUnknownConfiguration = false;
+    })
     .ValidateDataAnnotations()
     .ValidateOnStart();
 builder.Services.AddHostedService<Worker>();
